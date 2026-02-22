@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pia-server"
+version = "0.1.0"
+description = "PIA metrics server — system thermals and NVIDIA Spark GPU metrics via REST, GraphQL, and MCP"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "strawberry-graphql[fastapi]>=0.243.0",
+    "fastmcp>=2.0.0",
+    "aiosqlite>=0.20.0",
+    "pydantic>=2.7.0",
+    "pydantic-settings>=2.3.0",
+]
+
+[project.optional-dependencies]
+real = ["nvidia-ml-py>=12.560.30"]
+dev  = [
+    "pytest>=8.2.0",
+    "pytest-asyncio>=0.23.0",
+    "httpx>=0.27.0",
+    "ruff>=0.4.0",
+]
+
+[project.scripts]
+pia-server = "pia_server.main:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["pia_server"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
